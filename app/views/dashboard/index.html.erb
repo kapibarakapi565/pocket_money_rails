@@ -1,6 +1,21 @@
 <div class="container">
   <div class="header">
     <h1>💰 お小遣い管理</h1>
+    <div class="month-navigation">
+      <%= link_to dashboard_path(year: @prev_month.year, month: @prev_month.month), class: "nav-btn prev" do %>
+        <span class="nav-icon">‹</span>
+        <span class="nav-text"><%= @prev_month.strftime("%m月") %></span>
+      <% end %>
+      
+      <div class="current-month">
+        <h2><%= @month_name %></h2>
+      </div>
+      
+      <%= link_to dashboard_path(year: @next_month.year, month: @next_month.month), class: "nav-btn next" do %>
+        <span class="nav-text"><%= @next_month.strftime("%m月") %></span>
+        <span class="nav-icon">›</span>
+      <% end %>
+    </div>
   </div>
 
   <div class="content">
@@ -32,6 +47,8 @@
           <div class="input-group">
             <%= form.number_field :amount, value: @total_budget_obj.amount, placeholder: "総予算", required: true %>
             <%= form.hidden_field :budget_type, value: 'personal' %>
+            <%= hidden_field_tag :year, @current_year %>
+            <%= hidden_field_tag :month, @current_month %>
             <%= form.submit "総予算更新", class: "btn" %>
           </div>
         <% end %>
@@ -40,6 +57,8 @@
           <div class="input-group">
             <%= form.number_field :amount, placeholder: "総予算", required: true %>
             <%= form.hidden_field :budget_type, value: 'personal' %>
+            <%= hidden_field_tag :year, @current_year %>
+            <%= hidden_field_tag :month, @current_month %>
             <%= form.submit "総予算設定", class: "btn" %>
           </div>
         <% end %>
@@ -55,6 +74,8 @@
             <%= form.text_field :name, placeholder: "カテゴリ名", required: true %>
             <%= form.number_field :amount, placeholder: "金額", required: true, max: @unallocated %>
             <%= form.hidden_field :budget_type, value: 'personal' %>
+            <%= hidden_field_tag :year, @current_year %>
+            <%= hidden_field_tag :month, @current_month %>
             <%= form.submit "カテゴリ予算追加", class: "btn" %>
           </div>
           <% if @unallocated > 0 %>
@@ -104,6 +125,8 @@
             <%= form.select :budget_id, options_from_collection_for_select(@budgets, :id, :name), 
                 { prompt: "予算を選択" }, { required: true } %>
           <% end %>
+          <%= hidden_field_tag :year, @current_year %>
+          <%= hidden_field_tag :month, @current_month %>
           <%= form.submit "支出追加", class: "btn" %>
         </div>
       <% end %>

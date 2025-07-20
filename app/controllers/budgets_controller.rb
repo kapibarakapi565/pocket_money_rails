@@ -3,10 +3,13 @@ class BudgetsController < ApplicationController
   include ActionView::Helpers::NumberHelper
 
   def create
+    year = params[:year]&.to_i || Date.current.year
+    month = params[:month]&.to_i || Date.current.month
+    
     @budget = Budget.new(budget_params)
     @budget.user = @current_user
-    @budget.year = Date.current.year
-    @budget.month = Date.current.month
+    @budget.year = year
+    @budget.month = month
 
     # 総予算チェック
     total_budget = @current_user.total_budgets.find_by(
@@ -23,23 +26,25 @@ class BudgetsController < ApplicationController
       ).sum(:amount)
       
       if current_allocated + @budget.amount > total_budget.amount
-        redirect_to dashboard_path, 
+        redirect_to dashboard_path(year: year, month: month), 
                     alert: "総予算を超過します。残り予算: ¥#{number_with_delimiter((total_budget.amount - current_allocated).to_i)}"
         return
       end
     end
 
     if @budget.save
-      redirect_to dashboard_path, notice: '予算が追加されました'
+      redirect_to dashboard_path(year: year, month: month), notice: '予算が追加されました'
     else
-      redirect_to dashboard_path, alert: '予算の追加に失敗しました'
+      redirect_to dashboard_path(year: year, month: month), alert: '予算の追加に失敗しました'
     end
   end
 
   def destroy
     @budget = Budget.find(params[:id])
+    year = @budget.year
+    month = @budget.month
     @budget.destroy
-    redirect_to dashboard_path, notice: '予算が削除されました'
+    redirect_to dashboard_path(year: year, month: month), notice: '予算が削除されました'
   end
 
   private

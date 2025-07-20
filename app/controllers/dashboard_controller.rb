@@ -2,10 +2,15 @@ class DashboardController < ApplicationController
   before_action :set_current_user
   
   def index
-    @current_month = Date.current.month
-    @current_year = Date.current.year
+    @current_month = params[:month]&.to_i || Date.current.month
+    @current_year = params[:year]&.to_i || Date.current.year
+    
+    # 月・年の範囲チェック
+    @current_month = [[@current_month, 1].max, 12].min
+    @current_year = [[@current_year, 2020].max, 2030].min
     
     setup_personal_data
+    setup_month_navigation
   end
   
   private
@@ -38,6 +43,13 @@ class DashboardController < ApplicationController
     @unallocated = @total_budget - @allocated_budget
   end
   
+  def setup_month_navigation
+    @current_date = Date.new(@current_year, @current_month, 1)
+    @prev_month = @current_date - 1.month
+    @next_month = @current_date + 1.month
+    
+    @month_name = @current_date.strftime("%Y年%m月")
+  end
   
   def create_demo_users
     husband = User.create!(

@@ -8,17 +8,22 @@ class ExpensesController < ApplicationController
     @expense.budget = @budget
     @expense.expense_date = Date.current
 
+    year = @budget.year
+    month = @budget.month
+
     if @expense.save
-      redirect_to dashboard_path, notice: '支出が追加されました'
+      redirect_to dashboard_path(year: year, month: month), notice: '支出が追加されました'
     else
-      redirect_to dashboard_path, alert: '支出の追加に失敗しました'
+      redirect_to dashboard_path(year: year, month: month), alert: '支出の追加に失敗しました'
     end
   end
 
   def destroy
     @expense = Expense.find(params[:id])
+    year = @expense.budget.year
+    month = @expense.budget.month
     @expense.destroy
-    redirect_to dashboard_path, notice: '支出が削除されました'
+    redirect_to dashboard_path(year: year, month: month), notice: '支出が削除されました'
   end
 
   private
