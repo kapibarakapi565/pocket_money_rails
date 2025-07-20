@@ -24,7 +24,7 @@ class BudgetsController < ApplicationController
       
       if current_allocated + @budget.amount > total_budget.amount
         redirect_to dashboard_path, 
-                    alert: "総予算を超過します。残り予算: ¥#{number_with_delimiter(total_budget.amount - current_allocated)}"
+                    alert: "総予算を超過します。残り予算: ¥#{number_with_delimiter((total_budget.amount - current_allocated).to_i)}"
         return
       end
     end

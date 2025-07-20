@@ -8,19 +8,19 @@
     <div class="summary-cards">
       <div class="card budget">
         <h3>総予算</h3>
-        <div class="amount">¥<%= number_with_delimiter(@total_budget || 0) %></div>
+        <div class="amount">¥<%= number_with_delimiter((@total_budget || 0).to_i) %></div>
       </div>
       <div class="card allocated">
         <h3>割当済み</h3>
-        <div class="amount">¥<%= number_with_delimiter(@allocated_budget || 0) %></div>
+        <div class="amount">¥<%= number_with_delimiter((@allocated_budget || 0).to_i) %></div>
       </div>
       <div class="card spent">
         <h3>使用額</h3>
-        <div class="amount">¥<%= number_with_delimiter(@total_spent || 0) %></div>
+        <div class="amount">¥<%= number_with_delimiter((@total_spent || 0).to_i) %></div>
       </div>
       <div class="card remaining">
         <h3>未割当</h3>
-        <div class="amount">¥<%= number_with_delimiter(@unallocated || 0) %></div>
+        <div class="amount">¥<%= number_with_delimiter((@unallocated || 0).to_i) %></div>
       </div>
     </div>
 
@@ -58,7 +58,7 @@
             <%= form.submit "カテゴリ予算追加", class: "btn" %>
           </div>
           <% if @unallocated > 0 %>
-            <small class="budget-info">残り予算: ¥<%= number_with_delimiter(@unallocated) %></small>
+            <small class="budget-info">残り予算: ¥<%= number_with_delimiter(@unallocated.to_i) %></small>
           <% else %>
             <small class="budget-warning">予算が全て割り当て済みです</small>
           <% end %>
@@ -74,13 +74,13 @@
               <div class="expense-info">
                 <div class="expense-description"><%= budget.name %></div>
                 <div class="expense-date">
-                  予算: ¥<%= number_with_delimiter(budget.amount) %> | 
-                  使用: ¥<%= number_with_delimiter(budget.spent_amount) %> | 
-                  残り: ¥<%= number_with_delimiter(budget.remaining_amount) %>
+                  予算: ¥<%= number_with_delimiter(budget.amount.to_i) %> | 
+                  使用: ¥<%= number_with_delimiter(budget.spent_amount.to_i) %> | 
+                  残り: ¥<%= number_with_delimiter(budget.remaining_amount.to_i) %>
                   (<%= budget.usage_percentage %>%)
                 </div>
               </div>
-              <div class="expense-amount">¥<%= number_with_delimiter(budget.amount) %></div>
+              <div class="expense-amount">¥<%= number_with_delimiter(budget.amount.to_i) %></div>
               <%= button_to "削除", budget_path(budget), 
                   method: :delete, 
                   confirm: "本当に削除しますか？", 
@@ -116,7 +116,7 @@
                 <div class="expense-description"><%= expense.description %></div>
                 <div class="expense-date"><%= expense.expense_date.strftime("%m/%d") %></div>
               </div>
-              <div class="expense-amount">¥<%= number_with_delimiter(expense.amount) %></div>
+              <div class="expense-amount">¥<%= number_with_delimiter(expense.amount.to_i) %></div>
               <%= button_to "削除", expense_path(expense), 
                   method: :delete, 
                   confirm: "本当に削除しますか？", 
