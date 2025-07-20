@@ -1,0 +1,2 @@
+module TotalBudgetsHelper
+end

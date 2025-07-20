@@ -1,0 +1,133 @@
+<div class="container">
+  <div class="header">
+    <h1>💰 お小遣い管理</h1>
+  </div>
+
+  <div class="content">
+    <!-- 概要カード -->
+    <div class="summary-cards">
+      <div class="card budget">
+        <h3>総予算</h3>
+        <div class="amount">¥<%= number_with_delimiter(@total_budget || 0) %></div>
+      </div>
+      <div class="card allocated">
+        <h3>割当済み</h3>
+        <div class="amount">¥<%= number_with_delimiter(@allocated_budget || 0) %></div>
+      </div>
+      <div class="card spent">
+        <h3>使用額</h3>
+        <div class="amount">¥<%= number_with_delimiter(@total_spent || 0) %></div>
+      </div>
+      <div class="card remaining">
+        <h3>未割当</h3>
+        <div class="amount">¥<%= number_with_delimiter(@unallocated || 0) %></div>
+      </div>
+    </div>
+
+    <!-- 総予算設定 -->
+    <div class="section">
+      <h2>💰 総予算設定</h2>
+      <% if @total_budget_obj %>
+        <%= form_with model: @total_budget_obj, url: total_budget_path(@total_budget_obj), method: :patch, local: true do |form| %>
+          <div class="input-group">
+            <%= form.number_field :amount, value: @total_budget_obj.amount, placeholder: "総予算", required: true %>
+            <%= form.hidden_field :budget_type, value: 'personal' %>
+            <%= form.submit "総予算更新", class: "btn" %>
+          </div>
+        <% end %>
+      <% else %>
+        <%= form_with model: TotalBudget.new, url: total_budgets_path, method: :post, local: true do |form| %>
+          <div class="input-group">
+            <%= form.number_field :amount, placeholder: "総予算", required: true %>
+            <%= form.hidden_field :budget_type, value: 'personal' %>
+            <%= form.submit "総予算設定", class: "btn" %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <!-- カテゴリ別予算設定 -->
+    <div class="section">
+      <h2>📊 カテゴリ別予算設定</h2>
+      <% if @total_budget > 0 %>
+        <%= form_with model: Budget.new, url: budgets_path, method: :post, local: true do |form| %>
+          <div class="input-group">
+            <%= form.text_field :name, placeholder: "カテゴリ名", required: true %>
+            <%= form.number_field :amount, placeholder: "金額", required: true, max: @unallocated %>
+            <%= form.hidden_field :budget_type, value: 'personal' %>
+            <%= form.submit "カテゴリ予算追加", class: "btn" %>
+          </div>
+          <% if @unallocated > 0 %>
+            <small class="budget-info">残り予算: ¥<%= number_with_delimiter(@unallocated) %></small>
+          <% else %>
+            <small class="budget-warning">予算が全て割り当て済みです</small>
+          <% end %>
+        <% end %>
+      <% else %>
+        <p class="no-data">まず総予算を設定してください</p>
+      <% end %>
+      
+      <% if @budgets.present? %>
+        <div class="expense-list">
+          <% @budgets.each do |budget| %>
+            <div class="expense-item">
+              <div class="expense-info">
+                <div class="expense-description"><%= budget.name %></div>
+                <div class="expense-date">
+                  予算: ¥<%= number_with_delimiter(budget.amount) %> | 
+                  使用: ¥<%= number_with_delimiter(budget.spent_amount) %> | 
+                  残り: ¥<%= number_with_delimiter(budget.remaining_amount) %>
+                  (<%= budget.usage_percentage %>%)
+                </div>
+              </div>
+              <div class="expense-amount">¥<%= number_with_delimiter(budget.amount) %></div>
+              <%= button_to "削除", budget_path(budget), 
+                  method: :delete, 
+                  confirm: "本当に削除しますか？", 
+                  class: "delete-btn" %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="no-data">まだカテゴリ予算が設定されていません</div>
+      <% end %>
+    </div>
+
+    <!-- 支出入力 -->
+    <div class="section">
+      <h2>💸 支出入力</h2>
+      <%= form_with model: Expense.new, url: expenses_path, method: :post, local: true do |form| %>
+        <div class="input-group">
+          <%= form.text_field :description, placeholder: "支出内容", required: true %>
+          <%= form.number_field :amount, placeholder: "金額", required: true %>
+          <% if @budgets.present? %>
+            <%= form.select :budget_id, options_from_collection_for_select(@budgets, :id, :name), 
+                { prompt: "予算を選択" }, { required: true } %>
+          <% end %>
+          <%= form.submit "支出追加", class: "btn" %>
+        </div>
+      <% end %>
+      
+      <% if @expenses.present? %>
+        <div class="expense-list">
+          <% @expenses.order(created_at: :desc).limit(10).each do |expense| %>
+            <div class="expense-item">
+              <div class="expense-info">
+                <div class="expense-description"><%= expense.description %></div>
+                <div class="expense-date"><%= expense.expense_date.strftime("%m/%d") %></div>
+              </div>
+              <div class="expense-amount">¥<%= number_with_delimiter(expense.amount) %></div>
+              <%= button_to "削除", expense_path(expense), 
+                  method: :delete, 
+                  confirm: "本当に削除しますか？", 
+                  class: "delete-btn" %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="no-data">まだ支出が記録されていません</div>
+      <% end %>
+    </div>
+
+  </div>
+</div>
