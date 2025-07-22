@@ -7,7 +7,6 @@ class ExpensesController < ApplicationController
     @expense.user = @current_user
     @expense.budget = @budget
     @expense.category = @budget.category
-    @expense.expense_date = Date.current
 
     year = @budget.year
     month = @budget.month
@@ -50,6 +49,6 @@ class ExpensesController < ApplicationController
   end
 
   def expense_params
-    params.require(:expense).permit(:description, :amount, :budget_id)
+    params.require(:expense).permit(:description, :amount, :expense_date, :budget_id)
   end
 end

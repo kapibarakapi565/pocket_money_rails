@@ -121,6 +121,7 @@
         <div class="input-group">
           <%= form.text_field :description, placeholder: "支出内容", required: true %>
           <%= form.number_field :amount, placeholder: "金額", required: true %>
+          <%= form.date_field :expense_date, value: Date.current, required: true %>
           <% if @budgets.present? %>
             <%= form.select :budget_id, options_from_collection_for_select(@budgets, :id, :name), 
                 { prompt: "予算を選択" }, { required: true } %>
