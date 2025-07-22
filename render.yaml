@@ -2,7 +2,11 @@ services:
   - type: web
     name: pocket-money-rails
     env: ruby
-    buildCommand: bundle install && bundle exec rails db:migrate && bundle exec rails assets:precompile
+    buildCommand: |
+      bundle config --global frozen 1
+      bundle install --without development:test
+      bundle exec rails assets:precompile
+      bundle exec rails db:migrate
     startCommand: bundle exec rails server -b 0.0.0.0 -p $PORT -e production
     envVars:
       - key: RAILS_ENV
@@ -11,3 +15,5 @@ services:
         value: true
       - key: RAILS_LOG_TO_STDOUT
         value: true
+      - key: NODE_ENV
+        value: production

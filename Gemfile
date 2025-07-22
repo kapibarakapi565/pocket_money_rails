@@ -60,3 +60,8 @@ group :development do
   # gem "spring"
 end
 
+group :production do
+  # Use PostgreSQL as the database for Active Record in production
+  # gem "pg", "~> 1.1" # Already defined above
+end
+
