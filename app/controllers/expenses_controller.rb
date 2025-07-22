@@ -6,6 +6,7 @@ class ExpensesController < ApplicationController
     @expense = Expense.new(expense_params)
     @expense.user = @current_user
     @expense.budget = @budget
+    @expense.category = @budget.category
     @expense.expense_date = Date.current
 
     year = @budget.year
