@@ -102,10 +102,13 @@
                 </div>
               </div>
               <div class="expense-amount">¥<%= number_with_delimiter(budget.amount.to_i) %></div>
-              <%= button_to "削除", budget_path(budget), 
-                  method: :delete, 
-                  confirm: "本当に削除しますか？", 
-                  class: "delete-btn" %>
+              <div class="expense-actions">
+                <%= link_to "編集", edit_budget_path(budget), class: "edit-btn" %>
+                <%= button_to "削除", budget_path(budget), 
+                    method: :delete, 
+                    confirm: "本当に削除しますか？", 
+                    class: "delete-btn" %>
+              </div>
             </div>
           <% end %>
         </div>

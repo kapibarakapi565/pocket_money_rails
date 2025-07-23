@@ -1,2 +1,23 @@
-<h1>Budgets#edit</h1>
-<p>Find me in app/views/budgets/edit.html.erb</p>
+<div class="container">
+  <div class="header">
+    <h1>💰 予算編集</h1>
+  </div>
+
+  <div class="content">
+    <div class="section">
+      <h2>📊 カテゴリ予算編集</h2>
+      <%= form_with model: @budget, url: budget_path(@budget), method: :patch, local: true do |form| %>
+        <div class="input-group">
+          <%= form.text_field :name, value: @budget.name, placeholder: "カテゴリ名", required: true %>
+          <%= form.number_field :amount, value: @budget.amount, placeholder: "金額", required: true %>
+          <%= form.hidden_field :budget_type, value: @budget.budget_type %>
+          <%= form.submit "予算更新", class: "btn" %>
+        </div>
+      <% end %>
+      
+      <div class="button-group">
+        <%= link_to "戻る", dashboard_path(year: @budget.year, month: @budget.month), class: "btn btn-secondary" %>
+      </div>
+    </div>
+  </div>
+</div>

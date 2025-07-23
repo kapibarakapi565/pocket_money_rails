@@ -39,6 +39,44 @@ class BudgetsController < ApplicationController
     end
   end
 
+  def edit
+    @budget = Budget.find(params[:id])
+  end
+
+  def update
+    @budget = Budget.find(params[:id])
+    year = @budget.year
+    month = @budget.month
+    
+    # 総予算チェック（編集時）
+    total_budget = @current_user.total_budgets.find_by(
+      budget_type: @budget.budget_type,
+      year: @budget.year,
+      month: @budget.month
+    )
+    
+    if total_budget
+      current_allocated = @current_user.budgets.where(
+        budget_type: @budget.budget_type,
+        year: @budget.year,
+        month: @budget.month
+      ).where.not(id: @budget.id).sum(:amount)
+      
+      new_amount = budget_params[:amount].to_f
+      if current_allocated + new_amount > total_budget.amount
+        redirect_to dashboard_path(year: year, month: month), 
+                    alert: "総予算を超過します。残り予算: ¥#{number_with_delimiter((total_budget.amount - current_allocated).to_i)}"
+        return
+      end
+    end
+
+    if @budget.update(budget_params)
+      redirect_to dashboard_path(year: year, month: month), notice: '予算が更新されました'
+    else
+      redirect_to dashboard_path(year: year, month: month), alert: '予算の更新に失敗しました'
+    end
+  end
+
   def destroy
     @budget = Budget.find(params[:id])
     year = @budget.year
