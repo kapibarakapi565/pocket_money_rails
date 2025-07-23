@@ -6,7 +6,14 @@ class ExpensesController < ApplicationController
     @expense = Expense.new(expense_params)
     @expense.user = @current_user
     @expense.budget = @budget
-    @expense.category = @budget.category
+    
+    # カテゴリを作成または取得
+    @category = Category.find_or_create_by(
+      name: @budget.name,
+      user: @current_user,
+      category_type: @budget.budget_type
+    )
+    @expense.category = @category
 
     year = @budget.year
     month = @budget.month
