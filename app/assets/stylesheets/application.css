@@ -400,6 +400,15 @@ form.delete-btn input[type="submit"]:hover {
   text-decoration: none;
 }
 
+.expense-category {
+  color: #3b82f6;
+  font-weight: 600;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
 .budget-info {
   color: #10b981;
   font-weight: 600;

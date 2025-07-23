@@ -141,7 +141,10 @@
             <div class="expense-item">
               <div class="expense-info">
                 <div class="expense-description"><%= expense.description %></div>
-                <div class="expense-date"><%= expense.expense_date.strftime("%m/%d") %></div>
+                <div class="expense-date">
+                  <%= expense.expense_date.strftime("%m/%d") %> | 
+                  <span class="expense-category"><%= expense.budget.name %></span>
+                </div>
               </div>
               <div class="expense-amount">¥<%= number_with_delimiter(expense.amount.to_i) %></div>
               <%= button_to "削除", expense_path(expense), 
