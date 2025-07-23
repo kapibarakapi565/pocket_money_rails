@@ -144,6 +144,7 @@
                 <div class="expense-date">
                   <%= expense.expense_date.strftime("%m/%d") %> | 
                   <span class="expense-category"><%= expense.budget.name %></span>
+                  <span class="budget-remaining">残り¥<%= number_with_delimiter(expense.budget.remaining_amount.to_i) %></span>
                 </div>
               </div>
               <div class="expense-amount">¥<%= number_with_delimiter(expense.amount.to_i) %></div>
