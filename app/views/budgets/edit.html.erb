@@ -16,7 +16,7 @@
       <% end %>
       
       <div class="button-group">
-        <%= link_to "戻る", dashboard_path(year: @budget.year, month: @budget.month), class: "btn btn-secondary" %>
+        <%= link_to "戻る", dashboard_path(year: @budget.year, month: @budget.month, user_type: params[:user_type]), class: "btn btn-secondary" %>
       </div>
     </div>
   </div>

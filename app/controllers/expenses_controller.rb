@@ -17,11 +17,12 @@ class ExpensesController < ApplicationController
 
     year = @budget.year
     month = @budget.month
+    user_type = params[:user_type]
 
     if @expense.save
-      redirect_to dashboard_path(year: year, month: month), notice: '支出が追加されました'
+      redirect_to dashboard_path(year: year, month: month, user_type: user_type), notice: '支出が追加されました'
     else
-      redirect_to dashboard_path(year: year, month: month), alert: '支出の追加に失敗しました'
+      redirect_to dashboard_path(year: year, month: month, user_type: user_type), alert: '支出の追加に失敗しました'
     end
   end
 
@@ -29,14 +30,24 @@ class ExpensesController < ApplicationController
     @expense = Expense.find(params[:id])
     year = @expense.budget.year
     month = @expense.budget.month
+    user_type = params[:user_type]
     @expense.destroy
-    redirect_to dashboard_path(year: year, month: month), notice: '支出が削除されました'
+    redirect_to dashboard_path(year: year, month: month, user_type: user_type), notice: '支出が削除されました'
   end
 
   private
 
   def set_current_user
-    @current_user = User.first || create_demo_users
+    # ユーザー切り替え機能
+    if params[:user_type] == 'wife'
+      @current_user = User.find_by(role: 'wife') || create_demo_users
+      @current_user = User.find_by(role: 'wife') if @current_user.role != 'wife'
+    elsif params[:user_type] == 'household'
+      @current_user = User.first || create_demo_users
+      @view_type = 'household'
+    else
+      @current_user = User.find_by(role: 'husband') || create_demo_users
+    end
   end
 
   def create_demo_users
