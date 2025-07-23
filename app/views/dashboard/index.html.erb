@@ -1,8 +1,25 @@
 <div class="container">
   <div class="header">
     <h1>💰 平敷家　家計管理アプリ</h1>
+    
+    <!-- ユーザー切り替えタブ -->
+    <div class="user-tabs">
+      <%= link_to dashboard_path(year: @current_year, month: @current_month), 
+          class: "user-tab #{'active' unless params[:user_type].in?(['wife', 'household'])}" do %>
+        👨 夫のお小遣い
+      <% end %>
+      <%= link_to dashboard_path(year: @current_year, month: @current_month, user_type: 'wife'), 
+          class: "user-tab #{'active' if params[:user_type] == 'wife'}" do %>
+        👩 妻のお小遣い
+      <% end %>
+      <%= link_to dashboard_path(year: @current_year, month: @current_month, user_type: 'household'), 
+          class: "user-tab #{'active' if params[:user_type] == 'household'}" do %>
+        🏠 家計管理
+      <% end %>
+    </div>
+    
     <div class="month-navigation">
-      <%= link_to dashboard_path(year: @prev_month.year, month: @prev_month.month), class: "nav-btn prev" do %>
+      <%= link_to dashboard_path(year: @prev_month.year, month: @prev_month.month, user_type: params[:user_type]), class: "nav-btn prev" do %>
         <span class="nav-icon">‹</span>
         <span class="nav-text"><%= @prev_month.strftime("%m月") %></span>
       <% end %>
@@ -11,7 +28,7 @@
         <h2><%= @month_name %></h2>
       </div>
       
-      <%= link_to dashboard_path(year: @next_month.year, month: @next_month.month), class: "nav-btn next" do %>
+      <%= link_to dashboard_path(year: @next_month.year, month: @next_month.month, user_type: params[:user_type]), class: "nav-btn next" do %>
         <span class="nav-text"><%= @next_month.strftime("%m月") %></span>
         <span class="nav-icon">›</span>
       <% end %>
@@ -46,9 +63,10 @@
         <%= form_with model: @total_budget_obj, url: total_budget_path(@total_budget_obj), method: :patch, local: true do |form| %>
           <div class="input-group">
             <%= form.number_field :amount, value: @total_budget_obj.amount, placeholder: "総予算", required: true %>
-            <%= form.hidden_field :budget_type, value: 'personal' %>
+            <%= form.hidden_field :budget_type, value: (@view_type == 'household' ? 'household' : 'personal') %>
             <%= hidden_field_tag :year, @current_year %>
             <%= hidden_field_tag :month, @current_month %>
+            <%= hidden_field_tag :user_type, params[:user_type] %>
             <%= form.submit "総予算更新", class: "btn" %>
           </div>
         <% end %>
@@ -56,9 +74,10 @@
         <%= form_with model: TotalBudget.new, url: total_budgets_path, method: :post, local: true do |form| %>
           <div class="input-group">
             <%= form.number_field :amount, placeholder: "総予算", required: true %>
-            <%= form.hidden_field :budget_type, value: 'personal' %>
+            <%= form.hidden_field :budget_type, value: (@view_type == 'household' ? 'household' : 'personal') %>
             <%= hidden_field_tag :year, @current_year %>
             <%= hidden_field_tag :month, @current_month %>
+            <%= hidden_field_tag :user_type, params[:user_type] %>
             <%= form.submit "総予算設定", class: "btn" %>
           </div>
         <% end %>
@@ -73,9 +92,10 @@
           <div class="input-group">
             <%= form.text_field :name, placeholder: "カテゴリ名", required: true %>
             <%= form.number_field :amount, placeholder: "金額", required: true, max: @unallocated %>
-            <%= form.hidden_field :budget_type, value: 'personal' %>
+            <%= form.hidden_field :budget_type, value: (@view_type == 'household' ? 'household' : 'personal') %>
             <%= hidden_field_tag :year, @current_year %>
             <%= hidden_field_tag :month, @current_month %>
+            <%= hidden_field_tag :user_type, params[:user_type] %>
             <%= form.submit "カテゴリ予算追加", class: "btn" %>
           </div>
           <% if @unallocated > 0 %>

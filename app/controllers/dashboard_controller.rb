@@ -16,24 +16,34 @@ class DashboardController < ApplicationController
   private
   
   def set_current_user
-    # デモ用: 実際の認証実装まで仮のユーザーを使用
-    @current_user = User.first || create_demo_users
+    # ユーザー切り替え機能
+    if params[:user_type] == 'wife'
+      @current_user = User.find_by(role: 'wife') || create_demo_users
+      @current_user = User.find_by(role: 'wife') if @current_user.role != 'wife'
+    elsif params[:user_type] == 'household'
+      @current_user = User.first || create_demo_users
+      @view_type = 'household'
+    else
+      @current_user = User.find_by(role: 'husband') || create_demo_users
+    end
   end
   
   def setup_personal_data
+    budget_type = @view_type == 'household' ? 'household' : 'personal'
+    
     @total_budget_obj = @current_user.total_budgets.find_by(
-      budget_type: 'personal',
+      budget_type: budget_type,
       year: @current_year,
       month: @current_month
     )
     
     @budgets = @current_user.budgets.where(
-      budget_type: 'personal',
+      budget_type: budget_type,
       year: @current_year,
       month: @current_month
     )
     @expenses = @current_user.expenses.joins(:budget)
-                              .where(budgets: { budget_type: 'personal' })
+                              .where(budgets: { budget_type: budget_type })
                               .by_month(@current_year, @current_month)
     
     @total_budget = @total_budget_obj&.amount || 0
