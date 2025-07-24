@@ -29,7 +29,6 @@ export default class extends Controller {
   initializeSortable() {
     try {
       this.sortable = window.Sortable.create(this.element, {
-        handle: '.drag-handle',
         animation: 150,
         ghostClass: 'sortable-ghost',
         chosenClass: 'sortable-chosen',

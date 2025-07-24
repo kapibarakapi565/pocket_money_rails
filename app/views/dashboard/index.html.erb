@@ -115,7 +115,6 @@
              data-sortable-user-type-value="<%= params[:user_type] || '' %>">
           <% @budgets.each do |budget| %>
             <div class="expense-item" data-budget-id="<%= budget.id %>">
-              <div class="drag-handle">⋮⋮</div>
               <div class="expense-info">
                 <div class="expense-description"><%= budget.name %></div>
                 <div class="expense-date">

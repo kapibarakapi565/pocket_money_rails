@@ -290,6 +290,11 @@ body {
   gap: 12px;
   transition: all 0.2s ease;
   border: 1px solid rgba(255, 255, 255, 0.8);
+  cursor: grab;
+}
+
+.expense-item:active {
+  cursor: grabbing;
 }
 
 .expense-item .expense-info {
@@ -298,6 +303,11 @@ body {
 
 .expense-item .expense-actions {
   margin-left: auto;
+}
+
+.expense-item .expense-actions button,
+.expense-item .expense-actions a {
+  pointer-events: auto;
 }
 
 .expense-item:hover {
@@ -386,19 +396,6 @@ form.delete-btn input[type="submit"]:hover {
 }
 
 
-.drag-handle {
-  cursor: grab;
-  color: #9ca3af;
-  font-size: 1.2rem;
-  padding: 8px;
-  user-select: none;
-  display: flex;
-  align-items: center;
-}
-
-.drag-handle:active {
-  cursor: grabbing;
-}
 
 .sortable-ghost {
   opacity: 0.5;
