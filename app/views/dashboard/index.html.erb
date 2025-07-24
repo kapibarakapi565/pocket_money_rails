@@ -86,7 +86,22 @@
 
     <!-- カテゴリ別予算設定 -->
     <div class="section">
-      <h2>📊 カテゴリ別予算設定</h2>
+      <div class="section-header">
+        <h2>📊 カテゴリ別予算設定</h2>
+        <% if @budgets.present? %>
+          <% next_month_date = Date.new(@current_year, @current_month, 1) + 1.month %>
+          <%= button_to "#{next_month_date.strftime('%Y年%-m月')}にコピー", 
+              copy_to_next_month_budgets_path, 
+              method: :post,
+              params: { 
+                year: @current_year, 
+                month: @current_month, 
+                user_type: params[:user_type] 
+              },
+              confirm: "現在の予算設定を#{next_month_date.strftime('%Y年%-m月')}にコピーしますか？",
+              class: "copy-btn" %>
+        <% end %>
+      </div>
       <% if @total_budget > 0 %>
         <%= form_with model: Budget.new, url: budgets_path, method: :post, local: true do |form| %>
           <div class="input-group">

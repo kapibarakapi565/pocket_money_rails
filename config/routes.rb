@@ -5,6 +5,9 @@ Rails.application.routes.draw do
     member do
       patch :reorder
     end
+    collection do
+      post :copy_to_next_month
+    end
   end
   resources :expenses
   resources :total_budgets, only: [:create, :update]

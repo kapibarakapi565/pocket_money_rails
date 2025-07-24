@@ -116,6 +116,76 @@ class BudgetsController < ApplicationController
     
     head :ok
   end
+  
+  def copy_to_next_month
+    year = params[:year]&.to_i || Date.current.year
+    month = params[:month]&.to_i || Date.current.month
+    user_type = params[:user_type]
+    
+    current_date = Date.new(year, month, 1)
+    next_month_date = current_date + 1.month
+    next_year = next_month_date.year
+    next_month = next_month_date.month
+    
+    budget_type = user_type == 'household' ? 'household' : 'personal'
+    
+    # 現在月の予算を取得
+    current_budgets = @current_user.budgets.where(
+      budget_type: budget_type,
+      year: year,
+      month: month
+    ).ordered
+    
+    # 次月に既に予算があるかチェック
+    existing_budgets = @current_user.budgets.where(
+      budget_type: budget_type,
+      year: next_year,
+      month: next_month
+    )
+    
+    if existing_budgets.exists?
+      redirect_to dashboard_path(year: year, month: month, user_type: user_type), 
+                  alert: "#{next_year}年#{next_month}月には既に予算が設定されています"
+      return
+    end
+    
+    # 総予算もコピー
+    current_total_budget = @current_user.total_budgets.find_by(
+      budget_type: budget_type,
+      year: year,
+      month: month
+    )
+    
+    copied_count = 0
+    
+    ActiveRecord::Base.transaction do
+      # 総予算をコピー
+      if current_total_budget
+        @current_user.total_budgets.create!(
+          budget_type: budget_type,
+          year: next_year,
+          month: next_month,
+          amount: current_total_budget.amount
+        )
+      end
+      
+      # 個別予算をコピー
+      current_budgets.each_with_index do |budget, index|
+        @current_user.budgets.create!(
+          name: budget.name,
+          amount: budget.amount,
+          budget_type: budget_type,
+          year: next_year,
+          month: next_month,
+          sort_order: index + 1
+        )
+        copied_count += 1
+      end
+    end
+    
+    redirect_to dashboard_path(year: next_year, month: next_month, user_type: user_type), 
+                notice: "#{copied_count}件の予算を#{next_year}年#{next_month}月にコピーしました"
+  end
 
   private
 
