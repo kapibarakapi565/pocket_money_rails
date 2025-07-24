@@ -10,11 +10,11 @@
       <% end %>
       <%= link_to dashboard_path(year: @current_year, month: @current_month), 
           class: "user-tab #{'active' unless params[:user_type].in?(['wife', 'household'])}" do %>
-        👨 夫のお小遣い
+        👨 まさふみのお小遣い
       <% end %>
       <%= link_to dashboard_path(year: @current_year, month: @current_month, user_type: 'wife'), 
           class: "user-tab #{'active' if params[:user_type] == 'wife'}" do %>
-        👩 妻のお小遣い
+        👩 このめのお小遣い
       <% end %>
     </div>
     
