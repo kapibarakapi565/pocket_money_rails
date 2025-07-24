@@ -1,5 +1,4 @@
 import { Controller } from "@hotwired/stimulus"
-import Sortable from "sortablejs"
 
 export default class extends Controller {
   static values = { 
@@ -12,15 +11,24 @@ export default class extends Controller {
     console.log('Element:', this.element)
     console.log('URL value:', this.urlValue)
     console.log('User type value:', this.userTypeValue)
-    console.log('Sortable available:', typeof Sortable)
+    console.log('Window Sortable available:', typeof window.Sortable)
     
-    if (typeof Sortable === 'undefined') {
-      console.error('SortableJS is not loaded!')
-      return
+    // Sortableの読み込みを待つ
+    this.waitForSortable()
+  }
+  
+  waitForSortable() {
+    if (typeof window.Sortable !== 'undefined') {
+      this.initializeSortable()
+    } else {
+      // SortableJSが読み込まれるまで待つ
+      setTimeout(() => this.waitForSortable(), 100)
     }
-    
+  }
+  
+  initializeSortable() {
     try {
-      this.sortable = Sortable.create(this.element, {
+      this.sortable = window.Sortable.create(this.element, {
         handle: '.drag-handle',
         animation: 150,
         ghostClass: 'sortable-ghost',
