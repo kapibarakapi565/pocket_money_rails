@@ -109,9 +109,13 @@
       <% end %>
       
       <% if @budgets.present? %>
-        <div class="expense-list">
+        <div class="expense-list" 
+             data-controller="sortable" 
+             data-sortable-url-value="<%= budgets_path %>"
+             data-sortable-user-type-value="<%= params[:user_type] %>">
           <% @budgets.each do |budget| %>
-            <div class="expense-item">
+            <div class="expense-item" data-budget-id="<%= budget.id %>">
+              <div class="drag-handle">⋮⋮</div>
               <div class="expense-info">
                 <div class="expense-description"><%= budget.name %></div>
                 <div class="expense-date">
@@ -123,16 +127,6 @@
               </div>
               <div class="expense-amount">¥<%= number_with_delimiter(budget.amount.to_i) %></div>
               <div class="expense-actions">
-                <div class="sort-buttons">
-                  <%= button_to "↑", move_up_budget_path(budget), 
-                      method: :patch, 
-                      params: { user_type: params[:user_type] },
-                      class: "sort-btn" %>
-                  <%= button_to "↓", move_down_budget_path(budget), 
-                      method: :patch, 
-                      params: { user_type: params[:user_type] },
-                      class: "sort-btn" %>
-                </div>
                 <%= link_to "編集", edit_budget_path(budget), class: "edit-btn" %>
                 <%= button_to "削除", budget_path(budget), 
                     method: :delete, 

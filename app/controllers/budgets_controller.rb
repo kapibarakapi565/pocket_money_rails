@@ -88,48 +88,33 @@ class BudgetsController < ApplicationController
     redirect_to dashboard_path(year: year, month: month, user_type: user_type), notice: '予算が削除されました'
   end
   
-  def move_up
-    @budget = Budget.find(params[:id])
-    user_type = params[:user_type]
-    
-    # 同じユーザー・タイプ・年月の予算で一つ上の順序を見つける
-    upper_budget = @current_user.budgets.where(
-      budget_type: @budget.budget_type,
-      year: @budget.year,
-      month: @budget.month
-    ).where('sort_order < ?', @budget.sort_order)
-     .order(sort_order: :desc).first
-    
-    if upper_budget
-      # 順序を入れ替え
-      @budget.sort_order, upper_budget.sort_order = upper_budget.sort_order, @budget.sort_order
-      @budget.save!
-      upper_budget.save!
-    end
-    
-    redirect_to dashboard_path(year: @budget.year, month: @budget.month, user_type: user_type)
-  end
   
-  def move_down
+  def reorder
     @budget = Budget.find(params[:id])
+    new_index = params[:new_index].to_i
     user_type = params[:user_type]
     
-    # 同じユーザー・タイプ・年月の予算で一つ下の順序を見つける
-    lower_budget = @current_user.budgets.where(
+    # 同じユーザー・タイプ・年月の予算一覧を取得
+    budgets = @current_user.budgets.where(
       budget_type: @budget.budget_type,
       year: @budget.year,
       month: @budget.month
-    ).where('sort_order > ?', @budget.sort_order)
-     .order(sort_order: :asc).first
+    ).ordered.to_a
     
-    if lower_budget
-      # 順序を入れ替え
-      @budget.sort_order, lower_budget.sort_order = lower_budget.sort_order, @budget.sort_order
-      @budget.save!
-      lower_budget.save!
+    # 現在の位置を取得
+    old_index = budgets.index(@budget)
+    return if old_index.nil? || old_index == new_index
+    
+    # 配列から要素を削除して新しい位置に挿入
+    budgets.delete_at(old_index)
+    budgets.insert(new_index, @budget)
+    
+    # sort_orderを再設定
+    budgets.each_with_index do |budget, index|
+      budget.update_column(:sort_order, index + 1)
     end
     
-    redirect_to dashboard_path(year: @budget.year, month: @budget.month, user_type: user_type)
+    head :ok
   end
 
   private

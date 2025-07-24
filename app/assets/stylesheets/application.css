@@ -281,16 +281,23 @@ body {
 
 .expense-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
   background: white;
   margin-bottom: 12px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  gap: 20px;
+  gap: 12px;
   transition: all 0.2s ease;
   border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.expense-item .expense-info {
+  flex: 1;
+}
+
+.expense-item .expense-actions {
+  margin-left: auto;
 }
 
 .expense-item:hover {
@@ -378,32 +385,34 @@ form.delete-btn input[type="submit"]:hover {
   align-items: center;
 }
 
-.sort-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
 
-.sort-btn {
-  background: #6b7280;
-  color: white;
-  border: none;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  min-width: 24px;
-  height: 20px;
+.drag-handle {
+  cursor: grab;
+  color: #9ca3af;
+  font-size: 1.2rem;
+  padding: 8px;
+  user-select: none;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
-.sort-btn:hover {
-  background: #4b5563;
-  transform: translateY(-1px);
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.sortable-ghost {
+  opacity: 0.5;
+  background: #f3f4f6;
+}
+
+.sortable-chosen {
+  background: #eff6ff;
+  border: 2px dashed #3b82f6;
+}
+
+.sortable-drag {
+  opacity: 0.8;
+  transform: rotate(5deg);
 }
 
 .edit-btn {

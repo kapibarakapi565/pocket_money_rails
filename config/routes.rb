@@ -3,8 +3,7 @@ Rails.application.routes.draw do
   
   resources :budgets do
     member do
-      patch :move_up
-      patch :move_down
+      patch :reorder
     end
   end
   resources :expenses
