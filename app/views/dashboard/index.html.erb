@@ -62,7 +62,7 @@
       <% if @total_budget_obj %>
         <%= form_with model: @total_budget_obj, url: total_budget_path(@total_budget_obj), method: :patch, local: true do |form| %>
           <div class="input-group">
-            <%= form.number_field :amount, value: @total_budget_obj.amount, placeholder: "総予算", required: true %>
+            <%= form.number_field :amount, value: @total_budget_obj.amount.to_i, placeholder: "総予算", required: true %>
             <%= form.hidden_field :budget_type, value: (@view_type == 'household' ? 'household' : 'personal') %>
             <%= hidden_field_tag :year, @current_year %>
             <%= hidden_field_tag :month, @current_month %>

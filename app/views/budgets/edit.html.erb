@@ -9,7 +9,7 @@
       <%= form_with model: @budget, url: budget_path(@budget), method: :patch, local: true do |form| %>
         <div class="input-group">
           <%= form.text_field :name, value: @budget.name, placeholder: "カテゴリ名", required: true %>
-          <%= form.number_field :amount, value: @budget.amount, placeholder: "金額", required: true %>
+          <%= form.number_field :amount, value: @budget.amount.to_i, placeholder: "金額", required: true %>
           <%= form.hidden_field :budget_type, value: @budget.budget_type %>
           <%= form.submit "予算更新", class: "btn" %>
         </div>
