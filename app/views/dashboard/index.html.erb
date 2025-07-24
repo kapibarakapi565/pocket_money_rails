@@ -112,7 +112,7 @@
         <div class="expense-list" 
              data-controller="sortable" 
              data-sortable-url-value="<%= budgets_path %>"
-             data-sortable-user-type-value="<%= params[:user_type] %>">
+             data-sortable-user-type-value="<%= params[:user_type] || '' %>">
           <% @budgets.each do |budget| %>
             <div class="expense-item" data-budget-id="<%= budget.id %>">
               <div class="drag-handle">⋮⋮</div>
