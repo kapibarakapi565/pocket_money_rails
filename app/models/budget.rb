@@ -10,6 +10,12 @@ class Budget < ApplicationRecord
   
   enum budget_type: { personal: 'personal', household: 'household' }
   
+  # 並び順でソート
+  scope :ordered, -> { order(:sort_order, :created_at) }
+  
+  # 新規作成時に最大のsort_orderを設定
+  before_create :set_sort_order
+  
   def spent_amount
     expenses.sum(:amount)
   end
@@ -22,5 +28,16 @@ class Budget < ApplicationRecord
     return 0 if amount.zero?
     
     (spent_amount / amount * 100).round(2)
+  end
+  
+  private
+  
+  def set_sort_order
+    max_order = user.budgets.where(
+      budget_type: budget_type,
+      year: year,
+      month: month
+    ).maximum(:sort_order) || 0
+    self.sort_order = max_order + 1
   end
 end

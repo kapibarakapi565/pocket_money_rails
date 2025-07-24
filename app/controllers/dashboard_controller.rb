@@ -41,7 +41,7 @@ class DashboardController < ApplicationController
       budget_type: budget_type,
       year: @current_year,
       month: @current_month
-    )
+    ).ordered
     @expenses = @current_user.expenses.joins(:budget)
                               .where(budgets: { budget_type: budget_type })
                               .by_month(@current_year, @current_month)

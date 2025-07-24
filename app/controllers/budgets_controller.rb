@@ -87,6 +87,50 @@ class BudgetsController < ApplicationController
     @budget.destroy
     redirect_to dashboard_path(year: year, month: month, user_type: user_type), notice: '予算が削除されました'
   end
+  
+  def move_up
+    @budget = Budget.find(params[:id])
+    user_type = params[:user_type]
+    
+    # 同じユーザー・タイプ・年月の予算で一つ上の順序を見つける
+    upper_budget = @current_user.budgets.where(
+      budget_type: @budget.budget_type,
+      year: @budget.year,
+      month: @budget.month
+    ).where('sort_order < ?', @budget.sort_order)
+     .order(sort_order: :desc).first
+    
+    if upper_budget
+      # 順序を入れ替え
+      @budget.sort_order, upper_budget.sort_order = upper_budget.sort_order, @budget.sort_order
+      @budget.save!
+      upper_budget.save!
+    end
+    
+    redirect_to dashboard_path(year: @budget.year, month: @budget.month, user_type: user_type)
+  end
+  
+  def move_down
+    @budget = Budget.find(params[:id])
+    user_type = params[:user_type]
+    
+    # 同じユーザー・タイプ・年月の予算で一つ下の順序を見つける
+    lower_budget = @current_user.budgets.where(
+      budget_type: @budget.budget_type,
+      year: @budget.year,
+      month: @budget.month
+    ).where('sort_order > ?', @budget.sort_order)
+     .order(sort_order: :asc).first
+    
+    if lower_budget
+      # 順序を入れ替え
+      @budget.sort_order, lower_budget.sort_order = lower_budget.sort_order, @budget.sort_order
+      @budget.save!
+      lower_budget.save!
+    end
+    
+    redirect_to dashboard_path(year: @budget.year, month: @budget.month, user_type: user_type)
+  end
 
   private
 

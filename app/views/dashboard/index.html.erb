@@ -123,6 +123,16 @@
               </div>
               <div class="expense-amount">¥<%= number_with_delimiter(budget.amount.to_i) %></div>
               <div class="expense-actions">
+                <div class="sort-buttons">
+                  <%= button_to "↑", move_up_budget_path(budget), 
+                      method: :patch, 
+                      params: { user_type: params[:user_type] },
+                      class: "sort-btn" %>
+                  <%= button_to "↓", move_down_budget_path(budget), 
+                      method: :patch, 
+                      params: { user_type: params[:user_type] },
+                      class: "sort-btn" %>
+                </div>
                 <%= link_to "編集", edit_budget_path(budget), class: "edit-btn" %>
                 <%= button_to "削除", budget_path(budget), 
                     method: :delete, 

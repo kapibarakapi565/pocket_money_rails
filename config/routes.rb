@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
   root 'dashboard#index'
   
-  resources :budgets
+  resources :budgets do
+    member do
+      patch :move_up
+      patch :move_down
+    end
+  end
   resources :expenses
   resources :total_budgets, only: [:create, :update]
   
