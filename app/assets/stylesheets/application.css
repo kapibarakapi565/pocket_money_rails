@@ -40,7 +40,7 @@ body {
 }
 
 .header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #4f46e5 0%, #5b21b6 100%);
   color: white;
   padding: 48px 40px;
   text-align: center;
@@ -63,6 +63,7 @@ body {
   margin-bottom: 24px;
   font-weight: 700;
   letter-spacing: -0.02em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   position: relative;
   z-index: 1;
 }
@@ -88,6 +89,7 @@ body {
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
 }
@@ -111,6 +113,7 @@ body {
   margin: 0;
   color: white;
   text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   min-width: 140px;
 }
 
@@ -177,7 +180,7 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
+  background: linear-gradient(90deg, #4f46e5, #5b21b6);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -285,7 +288,7 @@ body {
 
 .input-group button, .input-group input[type="submit"] {
   padding: 16px 32px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #4f46e5 0%, #5b21b6 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -514,6 +517,7 @@ form.delete-btn input[type="submit"]:hover {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   border-color: #3b82f6;
   color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
