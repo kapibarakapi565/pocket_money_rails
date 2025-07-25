@@ -11,6 +11,7 @@
           <%= form.text_field :name, value: @budget.name, placeholder: "カテゴリ名", required: true %>
           <%= form.number_field :amount, value: @budget.amount.to_i, placeholder: "金額", required: true %>
           <%= form.hidden_field :budget_type, value: @budget.budget_type %>
+          <%= hidden_field_tag :user_type, params[:user_type] %>
           <%= form.submit "予算更新", class: "btn" %>
         </div>
       <% end %>

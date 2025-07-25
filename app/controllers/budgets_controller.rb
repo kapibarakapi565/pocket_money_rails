@@ -79,9 +79,15 @@ class BudgetsController < ApplicationController
     end
 
     if @budget.update(budget_params)
-      redirect_to dashboard_path(year: year, month: month, user_type: user_type), notice: '予算が更新されました'
+      respond_to do |format|
+        format.html { redirect_to dashboard_path(year: year, month: month, user_type: user_type), notice: '予算が更新されました' }
+        format.turbo_stream { redirect_to dashboard_path(year: year, month: month, user_type: user_type) }
+      end
     else
-      redirect_to dashboard_path(year: year, month: month, user_type: user_type), alert: '予算の更新に失敗しました'
+      respond_to do |format|
+        format.html { redirect_to dashboard_path(year: year, month: month, user_type: user_type), alert: '予算の更新に失敗しました' }
+        format.turbo_stream { redirect_to dashboard_path(year: year, month: month, user_type: user_type) }
+      end
     end
   end
 
