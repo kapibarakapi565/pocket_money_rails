@@ -34,9 +34,15 @@ class BudgetsController < ApplicationController
     end
 
     if @budget.save
-      redirect_to dashboard_path(year: year, month: month, user_type: user_type), notice: '予算が追加されました'
+      respond_to do |format|
+        format.html { redirect_to dashboard_path(year: year, month: month, user_type: user_type), notice: '予算が追加されました' }
+        format.turbo_stream { redirect_to dashboard_path(year: year, month: month, user_type: user_type) }
+      end
     else
-      redirect_to dashboard_path(year: year, month: month, user_type: user_type), alert: '予算の追加に失敗しました'
+      respond_to do |format|
+        format.html { redirect_to dashboard_path(year: year, month: month, user_type: user_type), alert: '予算の追加に失敗しました' }
+        format.turbo_stream { redirect_to dashboard_path(year: year, month: month, user_type: user_type) }
+      end
     end
   end
 
@@ -85,7 +91,10 @@ class BudgetsController < ApplicationController
     month = @budget.month
     user_type = params[:user_type]
     @budget.destroy
-    redirect_to dashboard_path(year: year, month: month, user_type: user_type), notice: '予算が削除されました'
+    respond_to do |format|
+      format.html { redirect_to dashboard_path(year: year, month: month, user_type: user_type), notice: '予算が削除されました' }
+      format.turbo_stream { redirect_to dashboard_path(year: year, month: month, user_type: user_type) }
+    end
   end
   
   

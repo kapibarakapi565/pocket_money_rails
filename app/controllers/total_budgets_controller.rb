@@ -16,9 +16,15 @@ class TotalBudgetsController < ApplicationController
     @total_budget.amount = total_budget_params[:amount]
 
     if @total_budget.save
-      redirect_to dashboard_path(year: year, month: month, user_type: user_type), notice: '総予算が設定されました'
+      respond_to do |format|
+        format.html { redirect_to dashboard_path(year: year, month: month, user_type: user_type), notice: '総予算が設定されました' }
+        format.turbo_stream { redirect_to dashboard_path(year: year, month: month, user_type: user_type) }
+      end
     else
-      redirect_to dashboard_path(year: year, month: month, user_type: user_type), alert: '総予算の設定に失敗しました'
+      respond_to do |format|
+        format.html { redirect_to dashboard_path(year: year, month: month, user_type: user_type), alert: '総予算の設定に失敗しました' }
+        format.turbo_stream { redirect_to dashboard_path(year: year, month: month, user_type: user_type) }
+      end
     end
   end
 
@@ -27,9 +33,15 @@ class TotalBudgetsController < ApplicationController
     user_type = params[:user_type]
     
     if @total_budget.update(total_budget_params)
-      redirect_to dashboard_path(year: @total_budget.year, month: @total_budget.month, user_type: user_type), notice: '総予算が更新されました'
+      respond_to do |format|
+        format.html { redirect_to dashboard_path(year: @total_budget.year, month: @total_budget.month, user_type: user_type), notice: '総予算が更新されました' }
+        format.turbo_stream { redirect_to dashboard_path(year: @total_budget.year, month: @total_budget.month, user_type: user_type) }
+      end
     else
-      redirect_to dashboard_path(year: @total_budget.year, month: @total_budget.month, user_type: user_type), alert: '総予算の更新に失敗しました'
+      respond_to do |format|
+        format.html { redirect_to dashboard_path(year: @total_budget.year, month: @total_budget.month, user_type: user_type), alert: '総予算の更新に失敗しました' }
+        format.turbo_stream { redirect_to dashboard_path(year: @total_budget.year, month: @total_budget.month, user_type: user_type) }
+      end
     end
   end
 
