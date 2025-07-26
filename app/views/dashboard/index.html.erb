@@ -156,29 +156,47 @@
       
       <% if @budgets.present? %>
         <div class="expense-list" 
-             data-controller="sortable" 
+             data-controller="sortable budget-selector" 
              data-sortable-url-value="<%= budgets_path %>"
              data-sortable-user-type-value="<%= params[:user_type] || '' %>">
           <% @budgets.each do |budget| %>
-            <div class="expense-item" data-budget-id="<%= budget.id %>">
-              <div class="expense-info">
-                <div class="expense-description"><%= budget.name %></div>
-                <div class="expense-date">
-                  予算: ¥<%= number_with_delimiter(budget.amount.to_i) %> | 
-                  使用: ¥<%= number_with_delimiter(budget.spent_amount.to_i) %> | 
-                  残り: ¥<%= number_with_delimiter(budget.remaining_amount.to_i) %>
-                  (<%= budget.usage_percentage %>%)
+            <div class="budget-item" 
+                 data-budget-id="<%= budget.id %>"
+                 data-budget-selector-target="item"
+                 data-action="click->budget-selector#selectItem">
+              <div class="budget-main">
+                <div class="budget-info">
+                  <div class="budget-name"><%= budget.name %></div>
+                  <div class="budget-details">
+                    予算: ¥<%= number_with_delimiter(budget.amount.to_i) %> | 
+                    使用: ¥<%= number_with_delimiter(budget.spent_amount.to_i) %> | 
+                    残り: ¥<%= number_with_delimiter(budget.remaining_amount.to_i) %>
+                    (<%= budget.usage_percentage %>%)
+                  </div>
                 </div>
+                <div class="budget-amount">¥<%= number_with_delimiter(budget.amount.to_i) %></div>
               </div>
-              <div class="expense-amount">¥<%= number_with_delimiter(budget.amount.to_i) %></div>
-              <div class="expense-actions">
-                <%= link_to "編集", edit_budget_path(budget, user_type: params[:user_type]), class: "edit-btn" %>
-                <%= button_to "削除", budget_path(budget), 
+              <div class="budget-actions" data-budget-selector-target="actions" style="display: none;">
+                <%= link_to edit_budget_path(budget, user_type: params[:user_type]), 
+                    class: "action-btn edit-btn", 
+                    title: "編集" do %>
+                  ✏️ 編集
+                <% end %>
+                <%= button_to budget_path(budget), 
                     method: :delete, 
                     confirm: "本当に削除しますか？", 
-                    class: "delete-btn",
+                    class: "action-btn delete-btn",
                     params: { user_type: params[:user_type] },
-                    local: false %>
+                    title: "削除",
+                    local: false do %>
+                  🗑️ 削除
+                <% end %>
+                <button type="button" 
+                        class="action-btn cancel-btn"
+                        data-action="click->budget-selector#cancelSelection"
+                        title="キャンセル">
+                  ❌ キャンセル
+                </button>
               </div>
             </div>
           <% end %>
