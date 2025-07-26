@@ -1,5 +1,12 @@
 class ApplicationController < ActionController::Base
-  # 基本認証を全てのコントローラーに適用
-  http_basic_authenticate_with name: Rails.application.credentials.basic_auth_username || ENV['BASIC_AUTH_USERNAME'] || 'admin',
-                               password: Rails.application.credentials.basic_auth_password || ENV['BASIC_AUTH_PASSWORD'] || 'password'
+  before_action :basic_auth
+
+
+  private
+
+  def basic_auth
+    authenticate_or_request_with_http_basic do |username, password|
+      username == ENV["BASIC_AUTH_USER"] && password == ENV["BASIC_AUTH_PASSWORD"]  # 環境変数を読み込む記述に変更
+    end
+  end
 end
