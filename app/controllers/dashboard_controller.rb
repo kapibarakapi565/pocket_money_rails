@@ -49,8 +49,15 @@ class DashboardController < ApplicationController
     @total_budget = @total_budget_obj&.amount || 0
     @allocated_budget = @budgets.sum(:amount)
     @total_spent = @expenses.sum(:amount)
-    @remaining = @total_budget - @total_spent
+    @remaining_budget = @total_budget - @total_spent  # 残額（最重要）
     @unallocated = @total_budget - @allocated_budget
+    
+    # 使用率計算（Level 2用）
+    @usage_percentage = @total_budget > 0 ? ((@total_spent / @total_budget) * 100).round(1) : 0
+    
+    # 月末までの日数計算
+    @days_left = (Date.new(@current_year, @current_month, -1) - Date.current).to_i + 1
+    @days_left = [@days_left, 0].max  # 負の数にならないようにする
   end
   
   def setup_month_navigation

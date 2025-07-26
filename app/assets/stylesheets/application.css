@@ -154,11 +154,145 @@ body {
   padding: 48px;
 }
 
-.summary-cards {
+/* 🔴 Level 1: 最重要情報 */
+.priority-section {
+  margin-bottom: 40px;
+}
+
+.level-1 {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 3px solid #3b82f6;
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.15);
+}
+
+.level-1 h2 {
+  font-size: 1.5rem;
+  color: #1e293b;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.mega-amount {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #059669;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  line-height: 1;
+}
+
+.days-info {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.days-left {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+/* 🟡 Level 2: 重要情報 */
+.level-2 {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 2px solid #f59e0b;
+  border-radius: 16px;
+  padding: 30px;
+}
+
+.status-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-  margin-bottom: 48px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.status-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.status-card h3 {
+  font-size: 1rem;
+  color: #374151;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.status-card .amount {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.status-card.spent .amount {
+  color: #dc2626;
+}
+
+.status-card.remaining .amount {
+  color: #059669;
+}
+
+.status-card .percentage {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* 🟢 Level 3: 詳細情報 */
+.level-3 {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 1px solid #10b981;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.detail-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.detail-item .label {
+  font-size: 0.9rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.detail-item .value {
+  font-size: 1rem;
+  color: #1f2937;
+  font-weight: 600;
 }
 
 .card {
@@ -577,9 +711,27 @@ form.delete-btn input[type="submit"]:hover {
     padding: 32px 24px;
   }
   
-  .summary-cards {
+  /* レスポンシブ対応 */
+  .level-1 {
+    padding: 24px;
+  }
+  
+  .mega-amount {
+    font-size: 2.5rem;
+  }
+  
+  .level-2 {
+    padding: 20px;
+  }
+  
+  .status-cards {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+  
+  .detail-info {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   
   .input-group {

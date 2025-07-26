@@ -36,23 +36,54 @@
   </div>
 
   <div class="content">
-    <!-- 概要カード -->
-    <div class="summary-cards">
-      <div class="card budget">
-        <h3>総予算</h3>
-        <div class="amount">¥<%= number_with_delimiter((@total_budget || 0).to_i) %></div>
+    <!-- 🔴 Level 1: 最重要情報 -->
+    <div class="priority-section level-1">
+      <div class="main-info">
+        <div class="remaining-budget">
+          <h2>今月あといくら使える？</h2>
+          <div class="mega-amount">¥<%= number_with_delimiter((@remaining_budget || 0).to_i) %></div>
+          <div class="days-info">
+            今日：<%= Date.current.strftime("%-m月%-d日") %> 
+            <span class="days-left">（月末まで<%= @days_left %>日）</span>
+          </div>
+        </div>
       </div>
-      <div class="card allocated">
-        <h3>割当済み</h3>
-        <div class="amount">¥<%= number_with_delimiter((@allocated_budget || 0).to_i) %></div>
+    </div>
+
+    <!-- 🟡 Level 2: 重要情報 -->
+    <div class="priority-section level-2">
+      <div class="status-cards">
+        <div class="status-card spent">
+          <h3>使用額</h3>
+          <div class="amount">¥<%= number_with_delimiter((@total_spent || 0).to_i) %></div>
+          <div class="percentage"><%= @usage_percentage %>%</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: <%= [@usage_percentage, 100].min %>%"></div>
+          </div>
+        </div>
+        <div class="status-card remaining">
+          <h3>使用可能額</h3>
+          <div class="amount">¥<%= number_with_delimiter((@remaining_budget || 0).to_i) %></div>
+          <div class="percentage"><%= 100 - @usage_percentage %>%</div>
+        </div>
       </div>
-      <div class="card spent">
-        <h3>使用額</h3>
-        <div class="amount">¥<%= number_with_delimiter((@total_spent || 0).to_i) %></div>
-      </div>
-      <div class="card remaining">
-        <h3>未割当</h3>
-        <div class="amount">¥<%= number_with_delimiter((@unallocated || 0).to_i) %></div>
+    </div>
+
+    <!-- 🟢 Level 3: 詳細情報 -->
+    <div class="priority-section level-3">
+      <div class="detail-info">
+        <div class="detail-item">
+          <span class="label">総予算</span>
+          <span class="value">¥<%= number_with_delimiter((@total_budget || 0).to_i) %></span>
+        </div>
+        <div class="detail-item">
+          <span class="label">割当済み</span>
+          <span class="value">¥<%= number_with_delimiter((@allocated_budget || 0).to_i) %></span>
+        </div>
+        <div class="detail-item">
+          <span class="label">未割当</span>
+          <span class="value">¥<%= number_with_delimiter((@unallocated || 0).to_i) %></span>
+        </div>
       </div>
     </div>
 
