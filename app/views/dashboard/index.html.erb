@@ -1,6 +1,6 @@
 <div class="container">
   <div class="header">
-    <h1>💰 平敷家　家計管理アプリ</h1>
+    <h1>💰 家計管理アプリ</h1>
     
     <!-- ユーザー切り替えタブ -->
     <div class="user-tabs">
@@ -10,11 +10,11 @@
       <% end %>
       <%= link_to dashboard_path(year: @current_year, month: @current_month), 
           class: "user-tab #{'active' unless params[:user_type].in?(['wife', 'household'])}" do %>
-        👨 まさふみのお小遣い
+        👨 夫のお小遣い
       <% end %>
       <%= link_to dashboard_path(year: @current_year, month: @current_month, user_type: 'wife'), 
           class: "user-tab #{'active' if params[:user_type] == 'wife'}" do %>
-        👩 このめのお小遣い
+        👩 妻のお小遣い
       <% end %>
     </div>
     
