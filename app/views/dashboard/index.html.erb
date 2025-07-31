@@ -206,6 +206,62 @@
       <% end %>
     </div>
 
+    <!-- カレンダー表示 -->
+    <div class="section">
+      <h2>📅 支出カレンダー</h2>
+      <div class="calendar-container">
+        <div class="calendar">
+          <% 
+            # 月の最初の日と最後の日を取得
+            first_day = Date.new(@current_year, @current_month, 1)
+            last_day = Date.new(@current_year, @current_month, -1)
+            
+            # カレンダーの開始日（月曜日から開始）
+            start_date = first_day.beginning_of_week(:monday)
+            end_date = last_day.end_of_week(:monday)
+            
+            # 日付ごとの支出をグループ化
+            expenses_by_date = @expenses.group_by(&:expense_date)
+          %>
+          
+          <!-- 曜日ヘッダー -->
+          <div class="calendar-header">
+            <% %w[月 火 水 木 金 土 日].each do |day| %>
+              <div class="calendar-day-header"><%= day %></div>
+            <% end %>
+          </div>
+          
+          <!-- カレンダーグリッド -->
+          <div class="calendar-grid">
+            <% (start_date..end_date).each do |date| %>
+              <% is_current_month = date.month == @current_month %>
+              <% is_today = date == Date.current %>
+              <% day_expenses = expenses_by_date[date] || [] %>
+              <% daily_total = day_expenses.sum(&:amount) %>
+              
+              <div class="calendar-day <%= 'other-month' unless is_current_month %> <%= 'today' if is_today %>">
+                <div class="day-number"><%= date.day %></div>
+                <% if day_expenses.any? %>
+                  <div class="day-total">¥<%= number_with_delimiter(daily_total.to_i) %></div>
+                  <div class="day-expenses">
+                    <% day_expenses.first(3).each do |expense| %>
+                      <div class="expense-item-mini" title="<%= expense.description %> - ¥<%= number_with_delimiter(expense.amount.to_i) %>">
+                        <span class="expense-desc"><%= truncate(expense.description, length: 8) %></span>
+                        <span class="expense-amount">¥<%= number_with_delimiter(expense.amount.to_i) %></span>
+                      </div>
+                    <% end %>
+                    <% if day_expenses.count > 3 %>
+                      <div class="more-expenses">+<%= day_expenses.count - 3 %>件</div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- 支出入力 -->
     <div class="section">
       <h2>💸 支出入力</h2>
