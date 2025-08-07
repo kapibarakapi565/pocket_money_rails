@@ -1099,35 +1099,138 @@ form.delete-btn input[type="submit"]:hover {
   
   /* カレンダーのモバイル対応 */
   .calendar-container {
-    padding: 16px;
+    padding: 12px;
+    margin-bottom: 16px;
   }
   
   .calendar-header {
-    padding: 8px;
+    padding: 12px 8px;
+    border-radius: 8px;
   }
   
   .calendar-day-header {
-    font-size: 0.8rem;
-    padding: 4px 2px;
+    font-size: 0.85rem;
+    padding: 6px 4px;
+  }
+  
+  .calendar-grid {
+    border-radius: 8px;
+    gap: 1px;
   }
   
   .calendar-day {
-    min-height: 80px;
+    min-height: 100px;
+    padding: 6px;
+    border-radius: 4px;
+  }
+  
+  .calendar-day:hover {
+    transform: none;
+    z-index: auto;
+    box-shadow: none;
+  }
+  
+  .day-number {
+    font-size: 1rem;
+    margin-bottom: 3px;
+  }
+  
+  .day-total {
+    font-size: 0.8rem;
+    padding: 2px 5px;
+    margin-bottom: 4px;
+  }
+  
+  .expense-item-mini {
+    padding: 3px 5px;
+    font-size: 0.65rem;
+    margin-bottom: 1px;
+    border-left-width: 2px;
+  }
+  
+  .expense-desc {
+    margin-right: 2px;
+  }
+  
+  .expense-amount {
+    font-size: 0.6rem;
+  }
+  
+  .more-expenses {
+    font-size: 0.65rem;
+    padding: 1px 3px;
+    margin-top: 1px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 8px;
+  }
+  
+  .container {
+    border-radius: 20px;
+  }
+  
+  .header {
+    padding: 20px 16px;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+  
+  .content {
+    padding: 20px 16px;
+  }
+  
+  /* 極小画面でのカレンダー対応 */
+  .calendar-container {
+    padding: 8px;
+    border-radius: 12px;
+  }
+  
+  .calendar-header {
+    padding: 8px 6px;
+    border-radius: 6px;
+  }
+  
+  .calendar-day-header {
+    font-size: 0.75rem;
+    padding: 4px 2px;
+  }
+  
+  .calendar-grid {
+    border-radius: 6px;
+    gap: 1px;
+  }
+  
+  .calendar-day {
+    min-height: 85px;
     padding: 4px;
+    border-radius: 3px;
   }
   
   .day-number {
     font-size: 0.9rem;
+    margin-bottom: 2px;
   }
   
   .day-total {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     padding: 1px 4px;
+    margin-bottom: 3px;
   }
   
   .expense-item-mini {
     padding: 2px 4px;
     font-size: 0.6rem;
+    margin-bottom: 1px;
+  }
+  
+  .expense-desc {
+    margin-right: 2px;
   }
   
   .expense-amount {
@@ -1136,5 +1239,6 @@ form.delete-btn input[type="submit"]:hover {
   
   .more-expenses {
     font-size: 0.6rem;
+    padding: 1px 2px;
   }
 }
